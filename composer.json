@@ -1,0 +1,5 @@
+{
+    "require": {
+        "utopia-php/logger": "^0.1.0"
+    }
+}

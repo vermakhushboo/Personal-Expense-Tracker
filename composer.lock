@@ -1,0 +1,85 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "5d3e2f9c81bb53a56f883332c6865d86",
+    "packages": [
+        {
+            "name": "utopia-php/logger",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/utopia-php/logger.git",
+                "reference": "a7d626e349e8736e46d4d75f5ba686b40e73c097"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/utopia-php/logger/zipball/a7d626e349e8736e46d4d75f5ba686b40e73c097",
+                "reference": "a7d626e349e8736e46d4d75f5ba686b40e73c097",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3",
+                "vimeo/psalm": "4.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Utopia\\Logger\\": "src/Logger"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eldad Fux",
+                    "email": "eldad@appwrite.io"
+                },
+                {
+                    "name": "Matej Bačo",
+                    "email": "matej@appwrite.io"
+                },
+                {
+                    "name": "Christy Jacob",
+                    "email": "christy@appwrite.io"
+                }
+            ],
+            "description": "Utopia Logger library is simple and lite library for logging information, such as errors or warnings. This library is aiming to be as simple and easy to learn and use.",
+            "keywords": [
+                "appsignal",
+                "errors",
+                "framework",
+                "logger",
+                "logging",
+                "logs",
+                "php",
+                "raygun",
+                "sentry",
+                "upf",
+                "utopia",
+                "warnings"
+            ],
+            "support": {
+                "issues": "https://github.com/utopia-php/logger/issues",
+                "source": "https://github.com/utopia-php/logger/tree/0.1.0"
+            },
+            "time": "2021-12-20T06:57:26+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}
