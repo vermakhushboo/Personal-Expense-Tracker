@@ -29,25 +29,40 @@
 
 	function add_expense(){
 		alert("Expense added");
-		
-		event.preventDefault();
+
 		let date = document.getElementById("date").value;
 		let expense = document.getElementById("expense-title").value;
 		let price = document.getElementById("amount").value;
-		let obj = {
-			"date": date, 
-			"expense": expense, 
-			"price": price
-		};
-		let promise1 = appwrite.database.createDocument('61d5caa80bd88', 'unique()', obj);
+		let receipt = document.getElementById("myfile");
 
-		promise1.then(function (response) {
-			expenses = [...expenses, response];
+		let promise = appwrite.storage.createFile('unique()', receipt.files[0]);
+		let obj = {};
+
+		promise.then(function (response) {
 			console.log(response); // Success
+			let file_id = response.$id;
+			console.log(file_id);
+			let file_url = appwrite.storage.getFilePreview(file_id);
+			console.log(file_url);
+			obj = {
+				"date": date, 
+				"expense": expense, 
+				"price": price,
+				"file_url": file_url,
+				"file_id": file_id
+			};
+			let promise1 = appwrite.database.createDocument('61d5caa80bd88', 'unique()', obj);
+
+			promise1.then(function (response) {
+				expenses = [...expenses, response];
+				console.log(response); // Success
+			}, function (error) {
+				console.log(error); // Failure
+			});
 		}, function (error) {
 			console.log(error); // Failure
 		});
-		
+
 		document.getElementById("form").reset();
 	}
 
@@ -74,7 +89,27 @@
 			"price": price
 		};
 
-		event.preventDefault();
+		if(document.getElementById("myfile").files.length != 0){
+			let receipt = document.getElementById("myfile");
+			//delete existing file
+			let existing_file = expenses[update_index].file_id;
+			console.log(expenses[update_index]);
+			let promise1 = appwrite.storage.deleteFile(existing_file);
+			promise1.then(function (response) {
+				console.log("File deleted successfully"); // Success
+			}, function (error) {
+				console.log(error); // Failure
+			});
+			let promise = appwrite.storage.createFile('unique()', receipt.files[0]);
+			promise.then(function (response) {
+				let file_id = response.$id;
+				let file_url = appwrite.storage.getFilePreview(file_id);
+				obj.file_url = file_url;
+				obj.file_id = file_id;
+			}, function (error) {
+				console.log(error); // Failure
+			});
+		}
 
 		let promise = appwrite.database.updateDocument(expenses[update_index].$collection, expenses[update_index].$id, obj);
 
@@ -88,7 +123,7 @@
 			console.log(error); // Failure
 		});
 
-		document.getElementById("form").reset();
+		document.getElementById('form').reset();
 		document.getElementById('submit_btn').removeAttribute("hidden");
 		document.getElementById('update_btn').setAttribute("hidden", "hidden");
 	}
@@ -96,10 +131,12 @@
 	function deleteValues(i){
 		console.log(expenses[i].$collection, expenses[i].$id);
 		let promise = appwrite.database.deleteDocument(expenses[i].$collection, expenses[i].$id);
-
+		let promise1 = appwrite.storage.deleteFile(expenses[i].file_id);
+		promise1.then(function (response) {
+			console.log("File deleted successfully");
+		});
 		promise.then(function (response) {
-			expenses = expenses.filter(expense => expense.$id !== expenses[i].$id)
-			console.log(response); // Success
+			expenses = expenses.filter(expense => expense.$id !== expenses[i].$id);
 		}, function (error) {
 			console.log(error); // Failure
 		});
@@ -121,10 +158,10 @@
             <input type="date" id="date">
             <input type="text" placeholder="Expense title" id="expense-title">
             <input type="number" min="1" step="any" placeholder="Amount" id="amount"/>
-            <!-- <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-            <label class="custom-file-label" for="inputGroupFile04">Upload Receipt</label> -->
-            <input type="submit" id="submit_btn" value="Submit" on:click={add_expense}>
-            <input type="submit" id="update_btn" value="Update" hidden on:click={update_expense}>
+			<label for="myfile">Upload Receipt:</label>
+			<input type="file" id="myfile" name="myfile">
+            <input type="submit" id="submit_btn" value="Submit" on:click|preventDefault={add_expense}>
+            <input type="submit" id="update_btn" value="Update" hidden on:click|preventDefault={update_expense}>
         </form>
     </div>
     
@@ -169,7 +206,7 @@
             <button on:click={() => deleteValues(i)}>❌</button>
           </div>
           <div class="col cell">
-            
+            <img src={expense.file_url} height=50px width=50px alt="">
           </div>
         </div>
         {/each}
