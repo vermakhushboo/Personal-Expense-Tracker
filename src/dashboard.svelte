@@ -71,8 +71,8 @@
 		document.getElementById("date").value = expenses[i].date;
 		document.getElementById("expense-title").value = expenses[i].expense;
 		document.getElementById("amount").value = expenses[i].price;
-		document.getElementById('update_btn').removeAttribute("hidden");
-		document.getElementById('submit_btn').setAttribute("hidden", "hidden");
+		document.getElementById("update_btn").removeAttribute("hidden");
+		document.getElementById("submit_btn").setAttribute("hidden", "hidden");
 		update_index = i;
 		console.log(update_index);
 	}
@@ -117,15 +117,23 @@
 			expenses[update_index].date = date;
 			expenses[update_index].expense = expense;
 			expenses[update_index].price = price;
+			console.log("obj");
+			console.log(obj);
+			if (obj.hasOwnProperty('file_url'))
+			console.log("File url has been updated");
+			console.log(obj['file_url']);
+			expenses[update_index].file_url = obj.file_url;
+			if('file_id' in obj)
+			expenses[update_index].file_id = obj.file_id;
 			
 			console.log(response); // Success
 		}, function (error) {
 			console.log(error); // Failure
 		});
 
-		document.getElementById('form').reset();
-		document.getElementById('submit_btn').removeAttribute("hidden");
-		document.getElementById('update_btn').setAttribute("hidden", "hidden");
+		document.getElementById("form").reset();
+		document.getElementById("submit_btn").removeAttribute("hidden");
+		document.getElementById("update_btn").setAttribute("hidden", "hidden");
 	}
 
 	function deleteValues(i){
